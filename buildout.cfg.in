@@ -1,0 +1,75 @@
+[buildout]
+parts = tomcat
+        vivo
+        vivo_config
+#       #vivo_ant
+        supervisor
+        viveur
+develop = .
+unzip = true
+
+[tomcat]
+recipe = hexagonit.recipe.download
+url = http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.37/bin/apache-tomcat-6.0.37.tar.gz
+md5sum = f90b100cf51ae0a444bef5acd7b6edb2
+strip-top-level-dir = true
+
+[config]
+# these values will be inserted into the deploy.properties file
+mysql_database = vivo
+mysql_user = vivo
+mysql_password = XXXX
+
+[metis]
+# metis db used by metis_dumper tool
+user = XXX
+password = XXXX
+database = XXXX
+port = 1521
+sid = XXXX
+# export ORACLE_HOME=/opt/oracle/instantclient_11_2
+# export LD_LIBRARY_PATH=/opt/oracle/instantclient_11_2
+# sqlplus ub_select/j1sp2r4@metp.database.eur.nl:1521/METP
+
+[vivo_config]
+recipe = iw.recipe.cmd:py
+on_install = true
+on_update = true
+cmds =
+  >>> parts_dir = os.path.join(os.path.abspath(buildout.get('directory', '.')), 'parts')
+  >>> import ConfigParser
+  >>> buildout_config = ConfigParser.ConfigParser()
+  >>> buildout_config.read('buildout.cfg')
+  >>> vivo_config = open('vivo.deploy.properties', 'r').read()
+  >>> vivo_config = vivo_config.format(
+  >>>     mysql_password=buildout_config.get('config', 'mysql_password'),
+  >>>     mysql_user=buildout_config.get('config', 'mysql_user'),
+  >>>     mysql_database=buildout_config.get('config', 'mysql_database'))
+  >>> open(os.path.join(parts_dir, 'vivo', 'deploy.properties'), 'w').write(vivo_config)
+
+[vivo]
+recipe = hexagonit.recipe.download
+url = http://garr.dl.sourceforge.net/project/vivo/VIVO%20Application%20Source/vivo-rel-1.5.2.tar.gz
+md5sum = f109a0d7afc8c2051cb736bc1d2c161e
+strip-top-level-dir = true
+
+[vivo_ant]
+recipe = iw.recipe.cmd
+on_install = true
+on_update = true
+cmds = mkdir -p parts/vivo_data
+       cd parts/vivo
+       ant all
+
+[supervisor]
+recipe = collective.recipe.supervisor
+port = localhost:9001
+user = admin
+password = admin
+plugins = superlance
+programs =
+  10 Vivo (startsecs=10) ${buildout:parts-directory}/tomcat/bin/catalina.sh [run] ${buildout:parts-directory}/tomcat true
+
+[viveur]
+recipe = zc.recipe.egg
+eggs = viveur
