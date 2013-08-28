@@ -201,7 +201,8 @@ class MetisDB(object):
                     'issued_year': row.jaar_uitgave or row.verslagjaar,
                     'publisher': row.uitgever,
                     'publisher_loc': row.plaats_v_uitgifte}
-
+            if data['abstract']:
+                data['abstract'] = data['abstract'].replace('\x00', '')
             self.publications[metis_id] = data
             self.publications_by_year[row.verslagjaar].add(metis_id)
             organisations = set()

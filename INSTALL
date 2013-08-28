@@ -8,6 +8,8 @@ Before starting the buildout process, the following software needs to be install
 
 python (2.6/2.7)
 python-dev
+libxml2-dev
+libxslt-dev
 java 1.6 (Oracle SDK) (VIVO does not work with OpenJDK or Java 1.7)
 apache ant (1.8 or higher)
 mysql 5.1 or higher
@@ -31,7 +33,7 @@ export LD_LIBRARY_PATH=/opt/oracle/instantclient_11_2
 
 Running Bootstrap
 -----------------
-
+sudo pip install -U distribute
 python bootstrap.py
 ./bin/buildout
 

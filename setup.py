@@ -19,12 +19,15 @@ setup(
     entry_points= {
     'console_scripts': [
        'metis_dumper = viveur.tools:metis_dumper',
+       'vivo_ingester = viveur.tools:vivo_ingester',
+       'drop_vivo_tables = viveur.tools:drop_vivo_tables'
       ],
     },
     install_requires=[
         'cx_Oracle',
         'sqlalchemy',
-        'lxml'
+        'lxml',
+        'jnius'
     ],
 )
 

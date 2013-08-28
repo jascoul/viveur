@@ -1,2 +1,14 @@
 bin
+buildout.cfg
 eggs
+.installed.cfg
+develop-eggs/
+include/
+lib/
+local/
+metis.pickle
+parts/
+var/
+viveur.egg-info/
+*.pyc
+doc/
