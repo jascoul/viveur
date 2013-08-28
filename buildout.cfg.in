@@ -27,9 +27,6 @@ password = XXXX
 database = XXXX
 port = 1521
 sid = XXXX
-# export ORACLE_HOME=/opt/oracle/instantclient_11_2
-# export LD_LIBRARY_PATH=/opt/oracle/instantclient_11_2
-# sqlplus ub_select/j1sp2r4@metp.database.eur.nl:1521/METP
 
 [vivo_config]
 recipe = iw.recipe.cmd:py
