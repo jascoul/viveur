@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='viveur',
-    version='0.0.0dev',
+    version='0.1.0',
     author='Jasper Op de Coul',
     author_email='opdecoul@ubib.eur.nl',
     url='http://eur.nl/ul',
