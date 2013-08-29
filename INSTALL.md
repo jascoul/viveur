@@ -21,14 +21,15 @@ Required Software
 Setuptools
 ----------
 
-The version of setuptools that comes with Ubuntu is probably not > 0.7
+The version of setuptools that comes with Ubuntu is probably lower then version 0.7.
 You can try to work around this by using `virtualenv --no-setuptools`,
-but there can still be issues finding dependencies. I suggest updating the
+but there can still be issues finding dependencies.
+I suggest updating the
 systemwide setuptools version using the command:
 
-sudo pip install -U distribute
+   sudo pip install -U distribute
 
-If pip is not installed on the system you can do a apt-get install python-pip
+If pip is not installed on the system you can do an `apt-get install python-pip`
 
 Configuring MySQL
 -----------------
