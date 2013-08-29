@@ -137,8 +137,6 @@ class VIVOConverter(object):
                     fullname.append(', %s' % author['initials'])
                 if author['prefix']:
                     fullname.append(' %s' % author['prefix'])
-                if author['honorific']:
-                    fullname.insert(0, '%s ' % author['honorific'])
                 person_predicates[NS.rdfs.label] = literals(' '.join(fullname))
                 position_uri = NS.viveur['position-%s' % author['researcher_id']]
                 person_predicates[NS.core.personInPosition] = uris(position_uri)

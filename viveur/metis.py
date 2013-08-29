@@ -4,7 +4,12 @@ from operator import itemgetter
 import cPickle as pickle
 from collections import defaultdict
 
-import cx_Oracle
+try:
+    import cx_Oracle
+except ImportError:
+    print >> sys.stderr, ('WARNING: No Oracle support. '
+                          'Export path to instantclient to enable')
+
 import sqlalchemy as sql
 
 class MetisDB(object):

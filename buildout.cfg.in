@@ -2,7 +2,7 @@
 parts = tomcat
         vivo
         vivo_config
-#       #vivo_ant
+        vivo_ant
         supervisor
         viveur
 develop = .
@@ -31,7 +31,7 @@ sid = XXXX
 [vivo_config]
 recipe = iw.recipe.cmd:py
 on_install = true
-on_update = true
+on_update = false
 cmds =
   >>> parts_dir = os.path.join(os.path.abspath(buildout.get('directory', '.')), 'parts')
   >>> import ConfigParser
@@ -53,7 +53,7 @@ strip-top-level-dir = true
 [vivo_ant]
 recipe = iw.recipe.cmd
 on_install = true
-on_update = true
+on_update = false
 cmds = mkdir -p parts/vivo_data
        cd parts/vivo
        ant all
