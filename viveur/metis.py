@@ -242,8 +242,11 @@ class MetisDB(object):
             researcher.update(contributor)
             researcher['affiliation'] = self.organisations[
                 researcher['organisation_id']]
-            researcher['faculty'] = self.organisations[
-                researcher['organisation_id'][:2] + '000000']
+            try:
+                researcher['faculty'] = self.organisations[
+                    researcher['organisation_id'][:2] + '000000']
+            except:
+                pass
             result['author'].append(researcher)
         if result['journal_id']:
             result['journal'] = self.journals[result['journal_id']]

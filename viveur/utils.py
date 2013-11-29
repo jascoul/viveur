@@ -35,9 +35,7 @@ class NS(object):
     owl = Namespace('http://www.w3.org/2002/07/owl#')
     score = Namespace('http://vivoweb.org/ontology/score#')
     event = Namespace('http://purl.org/NET/c4dm/event.owl#')
-    eur = Namespace('http://vivo.eur.nl/ns/1.0#')
-
-
+    eur = Namespace('http://vivo.eur.nl/ontology/eur-1.0#')
 
     @classmethod
     def uri_split(cls, uri):

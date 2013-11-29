@@ -9,6 +9,7 @@ import sqlalchemy as sql
 
 ERIM = '45530000'
 RSM = '45000000'
+ERASMUSMC = '91000000'
 
 def metis_dumper():
     config_file = os.path.join(

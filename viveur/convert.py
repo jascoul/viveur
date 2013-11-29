@@ -7,6 +7,7 @@ VIVOTYPES = {'Article/Letter to the editor': NS.bibo.AcademicArticle,
              'Contribution weekly / daily journal':NS.bibo.Article,
              'Book - monograph - book editorial': NS.bibo.BookSection,
              'Report': NS.bibo.Report,
+             'Research case': NS.bibo.Document,
              'Book review': NS.core.Review,
              'Award': NS.core.Award,
              'internet article': NS.bibo.Webpage,
@@ -14,7 +15,8 @@ VIVOTYPES = {'Article/Letter to the editor': NS.bibo.AcademicArticle,
              'Lecture': NS.core.Presentation,
              'Inaugural speech': NS.core.Presentation,
              'television or radio appearance': NS.bibo.Interview,
-             'Computer program / software': NS.dctype.Software}
+             'Computer program / software': NS.dctype.Software,
+             'Patent': NS.bibo.Patent}
 
 # XXX: Book editorship is a contributor role, not a type..
 
@@ -48,6 +50,9 @@ class VIVOConverter(object):
 
         if work['type'] == 'Scientific position':
             # TODO: position should be added to a person, it's not a work
+            return
+        elif work['type'] == 'Journal editorship - referee':
+            # TODO: seems more like a role, same with book editorship
             return
         work_uri = NS.viveur['work-%s' % work['id']]
         predicates = {}
@@ -138,18 +143,24 @@ class VIVOConverter(object):
                 if author['prefix']:
                     fullname.append(' %s' % author['prefix'])
                 person_predicates[NS.rdfs.label] = literals(' '.join(fullname))
-                position_uri = NS.viveur['position-%s' % author['researcher_id']]
-                person_predicates[NS.core.personInPosition] = uris(position_uri)
+                position_uri = NS.viveur[
+                    'position-%s' % author['researcher_id']]
+                person_predicates[
+                    NS.core.personInPosition] = uris(position_uri)
                 position_predicates = {
                     NS.rdf.type: uris(NS.core.PrimaryPosition),
                     NS.core.positionForPerson: uris(person_uri),
-                    NS.rdfs.label: literals(author['type'])}
+                    NS.rdfs.label: literals(author.get('type') or 'researcher')}
                 if author['affiliation']['name'] == 'Extern':
                     org_uri = None
                     faculty_uri = None
                 else:
                     org_uri = NS.viveur['org-%s' % author['affiliation']['id']]
-                    faculty_uri = NS.viveur['org-%s' % author['faculty']['id']]
+                    try:
+                        faculty_uri = NS.viveur[
+                            'org-%s' % author['faculty']['id']]
+                    except:
+                        faculty_uri = None
                     person_predicates[NS.rdf.type].append(
                         {'type': 'uri',
                          'value': NS.eur.EURAcademicEmployee})
@@ -166,10 +177,12 @@ class VIVOConverter(object):
                         NS.rdf.type: uris(NS.foaf.Organization,
                                           org_type_uri),
                         NS.rdfs.label: literals(name),
-                        NS.foaf.name: literals(name),
-                        NS.core.subOrganizationWithin: uris(faculty_uri)}
+                        NS.foaf.name: literals(name)}
+                    if faculty_uri:
+                        org_predicates[NS.core.subOrganizationWithin] = uris(
+                            faculty_uri)
                     self.graph[org_uri] = org_predicates
-                if org_uri and faculty_uri not in self.graph:
+                if org_uri and faculty_uri and faculty_uri not in self.graph:
                     name = (author['faculty']['name_english'] or
                             author['faculty']['name'])
                     org_type_uri = NS.eur[
